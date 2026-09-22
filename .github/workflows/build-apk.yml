@@ -1,3 +1,4 @@
+
 name: Build APK
 on:
   push:
@@ -15,23 +16,21 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Install deps
-        run: npm install || true
+      - name: Fix Capacitor project
+        run: |
+          rm -rf android
+          npm init -y || true
+          npm install @capacitor/core @capacitor/cli @capacitor/android --save || true
+          npx cap init SenMarket com.senmarket.app --web-dir=. --npm-client npm || true
+          npx cap add android || true
+          mkdir -p android/capacitor-cordova-android-plugins/src/main
+          echo "ext { }" > android/capacitor-cordova-android-plugins/cordova.variables.gradle
+          npx cap sync android || true
       - name: Build APK
         run: |
-          if [ -f android/gradlew ]; then
-            cd android
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          else
-            npm install @capacitor/core @capacitor/cli @capacitor/android || true
-            npx cap init SenMarket com.senmarket.app --web-dir=. || true
-            npx cap add android || true
-            npx cap sync android || true
-            cd android
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          fi
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
