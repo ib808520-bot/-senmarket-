@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SenMarket</string>
+    <string name="title_activity_main">SenMarket</string>
+    <string name="package_name">com.senmarket.pro</string>
+    <string name="custom_url_scheme">com.senmarket.pro</string>
+</resources>
