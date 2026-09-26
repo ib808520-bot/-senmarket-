@@ -1,4 +1,4 @@
-: name: Generer APK
+name: Generer APK
 on: [push, workflow_dispatch]
 jobs:
   construire:
