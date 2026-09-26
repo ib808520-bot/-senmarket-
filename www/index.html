@@ -3,28 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SENMARKET</title>
+<title>SENMARKET - Multi Vendeurs</title>
 <style>
 body{font-family:sans-serif;margin:0;background:#f5f5f5}
-header{background:#000;color:#fff;padding:15px;display:flex;justify-content:space-between}
-.card{background:#fff;margin:10px;padding:15px;border-radius:12px}
-.btn{background:#25D366;color:#fff;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold}
+header{background:#000;color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
+.card{background:#fff;margin:12px;padding:15px;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.vendeur{font-size:13px;color:#555;margin:8px 0 0 0}
+.adresse{font-size:12px;color:#000;background:#f0f0f0;display:inline-block;padding:4px 8px;border-radius:20px;margin-top:4px}
+.btn{background:#25D366;color:#fff;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;margin-top:12px;font-size:15px}
+p{margin:5px 0}
 </style>
 </head>
 <body>
-<header><b>SENMARKET</b><span>Keur Massar</span></header>
+<header><b>SENMARKET</b><span>🇸🇳 Marché</span></header>
 
+<!-- VENDEUR 1 -->
 <div class="card">
 <h3>Casque Bluetooth Pro</h3>
-<p>18 000 FCFA</p>
-<button class="btn" onclick="window.open('https://wa.me/22177XXXXXXX?text=Bonjour, je veux le Casque à 18000F','_blank')">Commander sur WhatsApp</button>
+<p><b>18 000 FCFA</b></p>
+<p class="vendeur">Vendeur: <b>Moussa Electronics</b></p>
+<p class="adresse">📍 Keur Massar, Unité 5 - En face station</p>
+<button class="btn" onclick="commander('Casque Bluetooth Pro','18000','Moussa Electronics','Keur Massar Unité 5','221771111111')">Commander sur WhatsApp</button>
 </div>
 
+<!-- VENDEUR 2 -->
 <div class="card">
-<h3>Sac Premium</h3>
-<p>15 000 FCFA</p>
-<button class="btn" onclick="window.open('https://wa.me/22177XXXXXXX?text=Bonjour, je veux le Sac à 15000F','_blank')">Commander sur WhatsApp</button>
+<h3>Sac Premium Cuir</h3>
+<p><b>15 000 FCFA</b></p>
+<p class="vendeur">Vendeur: <b>Awa Boutique</b></p>
+<p class="adresse">📍 Pikine, Rue 10 - Marché Zinc</p>
+<button class="btn" onclick="commander('Sac Premium Cuir','15000','Awa Boutique','Pikine Rue 10','221772222222')">Commander sur WhatsApp</button>
 </div>
+
+<!-- VENDEUR 3 -->
+<div class="card">
+<h3>Montre Connectée</h3>
+<p><b>25 000 FCFA</b></p>
+<p class="vendeur">Vendeur: <b>Ibou Shop Dakar</b></p>
+<p class="adresse">📍 Dakar, Médina - Rue 22</p>
+<button class="btn" onclick="commander('Montre Connectée','25000','Ibou Shop','Dakar Medina','221773333333')">Commander sur WhatsApp</button>
+</div>
+
+<script>
+function commander(nom, prix, vendeur, adresse, whatsapp) {
+  let message = `Bonjour ${vendeur} (${adresse}),\n\nJe suis intéressé par : ${nom} à ${prix} FCFA\nVu sur SENMARKET.\n\nC'est toujours disponible ?`;
+  let url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
+</script>
 
 </body>
 </html>
