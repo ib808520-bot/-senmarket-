@@ -5,61 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SENMARKET</title>
 <style>
-body{font-family:sans-serif;margin:0;background:#f5f5f5}
-header{background:#000;color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
-.card{background:#fff;margin:12px;padding:0;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.1);overflow:hidden}
-.card img{width:100%;height:200px;object-fit:cover}
-.info{padding:15px}
-.vendeur{font-size:13px;color:#555;margin:8px 0 0 0}
-.adresse{font-size:12px;color:#000;background:#f0f0f0;display:inline-block;padding:4px 8px;border-radius:20px;margin-top:4px}
-.btn{background:#25D366;color:#fff;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;margin-top:12px;font-size:15px}
+body{margin:0;background:#f5f5f5;font-family:sans-serif;padding-bottom:80px}
+header{background:#fff;padding:10px 12px;position:sticky;top:0;z-index:20;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.top-row{display:flex;align-items:center;gap:8px}
+.search-btn{width:36px;height:36px;background:#f2f2f2;border:none;border-radius:50%;font-size:16px}
+.search-box{flex:1;display:flex;background:#f2f2f2;border-radius:20px;padding:6px 12px;align-items:center;gap:6px}
+.search-box input{border:none;background:transparent;width:100%;outline:none;font-size:14px}
+.logo{font-weight:700;margin-left:4px}
+
+#liste{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
+.card{background:#fff;border-radius:12px;overflow:hidden}
+.card img{width:100%;height:125px;object-fit:cover}
+.txt{padding:8px}
+.nome{font-size:12px;font-weight:600;height:28px;overflow:hidden;line-height:1.2}
+.prix{font-size:14px;font-weight:700;margin-top:4px}
+.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.loc{font-size:9px;background:#f0f0f0;padding:3px 6px;border-radius:8px}
+.phone{width:28px;height:28px;background:#e8f5e9;border-radius:50%;border:none}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0 12px 0;border-top:1px solid #eee;z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;border:none;background:none;font-size:11px;color:#777}
+.nav-item.active{color:#000}
+.nav-icon{font-size:22px;margin-bottom:2px}
+.nav-vendre{background:#000;color:#fff;width:48px;height:48px;border-radius:50%;margin-top:-20px;border:3px solid #fff;font-size:20px;display:flex;align-items:center;justify-content:center}
+
+#form{display:none;background:#fff;margin:8px;padding:15px;border-radius:12px}
+#form input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px}
+.save{background:#000;color:#fff;width:100%;padding:14px;border:none;border-radius:10px;margin-top:10px;font-weight:700}
 </style>
 </head>
 <body>
-<header><b>SENMARKET</b><span>🇸🇳 Marché</span></header>
+<header>
+<div class="top-row">
+<!-- BOUTON RECHERCHE EN HAUT A GAUCHE -->
+<button class="search-btn" onclick="document.getElementById('searchInput').focus()">🔍</button>
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Rechercher produit, boutique..." onkeyup="filtrer()">
+</div>
+<div class="logo">SEN</div>
+</div>
+</header>
 
-<!-- VENDEUR 1 : MOUSSA - Sa photo -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500">
-<div class="info">
-<h3>Casque Bluetooth Pro</h3>
-<p><b>18 000 FCFA</b></p>
-<p class="vendeur">Vendeur: <b>Moussa Electronics</b></p>
-<p class="adresse">📍 Keur Massar, Unité 5</p>
-<button class="btn" onclick="commander('Casque Bluetooth Pro','18000','Moussa Electronics','Keur Massar Unité 5','221771111111')">Commander sur WhatsApp</button>
-</div>
-</div>
-
-<!-- VENDEUR 2 : AWA - Sa photo -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500">
-<div class="info">
-<h3>Sac Premium Cuir</h3>
-<p><b>15 000 FCFA</b></p>
-<p class="vendeur">Vendeur: <b>Awa Boutique</b></p>
-<p class="adresse">📍 Pikine, Rue 10 - Marché Zinc</p>
-<button class="btn" onclick="commander('Sac Premium Cuir','15000','Awa Boutique','Pikine Rue 10','221772222222')">Commander sur WhatsApp</button>
-</div>
+<div id="form">
+<h3 style="margin:0 0 10px 0">Vendre</h3>
+<input type="file" id="f_photo" accept="image/*">
+<input type="text" id="f_nom" placeholder="Nom produit">
+<input type="number" id="f_prix" placeholder="Prix FCFA">
+<input type="text" id="f_vendeur" placeholder="Boutique">
+<input type="text" id="f_adresse" placeholder="Adresse">
+<input type="text" id="f_whatsapp" placeholder="WhatsApp 221...">
+<button class="save" onclick="addProd()">Publier</button>
 </div>
 
-<!-- VENDEUR 3 : IBOU - Sa photo -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500">
-<div class="info">
-<h3>Montre Connectée</h3>
-<p><b>25 000 FCFA</b></p>
-<p class="vendeur">Vendeur: <b>Ibou Shop Dakar</b></p>
-<p class="adresse">📍 Dakar, Médina - Rue 22</p>
-<button class="btn" onclick="commander('Montre Connectée','25000','Ibou Shop','Dakar Medina','221773333333')">Commander sur WhatsApp</button>
-</div>
+<div id="liste"></div>
+
+<div class="bottom-nav">
+<button class="nav-item active"><span class="nav-icon">🏠</span>Accueil</button>
+<button class="nav-item" onclick="document.getElementById('searchInput').focus()"><span class="nav-icon">🔍</span>Recherche</button>
+<button class="nav-item" onclick="toggleForm()"><span class="nav-vendre">+</span>Vendre</button>
+<button class="nav-item"><span class="nav-icon">🛒</span>Panier</button>
+<button class="nav-item"><span class="nav-icon">👤</span>Profil</button>
 </div>
 
 <script>
-function commander(nom, prix, vendeur, adresse, whatsapp) {
-  let message = `Bonjour ${vendeur} (${adresse}),\n\nJe suis intéressé par : ${nom} à ${prix} FCFA\nVu sur SENMARKET.`;
-  let url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
-  window.open(url, '_blank');
+let produits = JSON.parse(localStorage.getItem('sen_produits')||'[]');
+if(produits.length==0){
+ produits=[
+  {nom:"Redmi A5 64Go",prix:"65 000",vendeur:"Moussa",adresse:"Keur Massar",whatsapp:"221771111111",photo:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400"},
+  {nom:"Sac Cuir",prix:"15 000",vendeur:"Awa",adresse:"Pikine",whatsapp:"221772222222",photo:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400"},
+  {nom:"Casque Bluetooth",prix:"18 000",vendeur:"Ibou",adresse:"Médina",whatsapp:"221773333333",photo:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"},
+  {nom:"Montre Connectée",prix:"25 000",vendeur:"Dakar Store",adresse:"Dakar",whatsapp:"221774444444",photo:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"}
+ ];
 }
+function show(liste=produits){
+ let h="";
+ liste.slice().reverse().forEach(p=>{
+  h+=`<div class="card"><img src="${p.photo}"><div class="txt"><div class="nome">${p.nom}</div><div class="prix">${p.prix} FCFA</div><div style="font-size:10px;color:#777">${p.vendeur}</div><div class="bottom"><span class="loc">${p.adresse}</span><button class="phone" onclick="wa('${p.nom}','${p.prix}','${p.vendeur}','${p.adresse}','${p.whatsapp}')">📞</button></div></div></div>`;
+ });
+ document.getElementById('liste').innerHTML=h;
+}
+function filtrer(){
+ let q=document.getElementById('searchInput').value.toLowerCase();
+ let f=produits.filter(p=>p.nom.toLowerCase().includes(q) || p.vendeur.toLowerCase().includes(q) || p.adresse.toLowerCase().includes(q));
+ show(f);
+}
+function toggleForm(){let f=document.getElementById('form');f.style.display=f.style.display=='block'?'none':'block';window.scrollTo(0,0);}
+function addProd(){
+ let file=f_photo.files[0]; let r=new FileReader();
+ r.onload=e=>{
+  produits.push({photo:e.target.result,nom:f_nom.value,prix:f_prix.value,vendeur:f_vendeur.value,adresse:f_adresse.value,whatsapp:f_whatsapp.value});
+  localStorage.setItem('sen_produits',JSON.stringify(produits));
+  toggleForm(); show();
+ };
+ if(file) r.readAsDataURL(file); else alert("Ajoute photo");
+}
+function wa(nom,prix,vendeur,adresse,whatsapp){
+ window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Bonjour ${vendeur} ${adresse}, je veux ${nom} ${prix}`)}`,'_blank');
+}
+show();
 </script>
 </body>
 </html>
