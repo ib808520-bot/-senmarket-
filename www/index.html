@@ -5,234 +5,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SENMARKET</title>
 <style>
-body{margin:0;background:#f5f5f5;font-family:sans-serif;padding-bottom:85px}
+body{margin:0;background:#f5f5f5;font-family:sans-serif;padding-bottom:80px}
 header{background:#fff;padding:10px 12px;position:sticky;top:0;z-index:20;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
 .top-row{display:flex;align-items:center;gap:8px}
-.search-btn{width:36px;height:36px;background:#f2f2f2;border:none;border-radius:50%}
-.search-box{flex:1;display:flex;background:#f2f2f2;border-radius:20px;padding:6px 12px;gap:6px}
+.search-btn{width:36px;height:36px;background:#f2f2f2;border:none;border-radius:50%;font-size:16px}
+.search-box{flex:1;display:flex;background:#f2f2f2;border-radius:20px;padding:6px 12px;align-items:center;gap:6px}
 .search-box input{border:none;background:transparent;width:100%;outline:none;font-size:14px}
-
+.logo{font-weight:700;margin-left:4px}
 #liste{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
 .card{background:#fff;border-radius:12px;overflow:hidden}
 .card img{width:100%;height:125px;object-fit:cover}
-.txt{padding:8px}.nome{font-size:12px;font-weight:600;height:28px;overflow:hidden}.prix{font-size:14px;font-weight:700}
+.txt{padding:8px}
+.nome{font-size:12px;font-weight:600;height:28px;overflow:hidden;line-height:1.2}
+.prix{font-size:14px;font-weight:700;margin-top:4px}
 .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
 .loc{font-size:9px;background:#f0f0f0;padding:3px 6px;border-radius:8px}
 .phone{width:28px;height:28px;background:#e8f5e9;border-radius:50%;border:none}
-
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0 12px 0;border-top:1px solid #eee;z-index:100}
 .nav-item{display:flex;flex-direction:column;align-items:center;border:none;background:none;font-size:11px;color:#777}
-.nav-item.active{color:#000}.nav-icon{font-size:22px}
+.nav-item.active{color:#000}
+.nav-icon{font-size:22px;margin-bottom:2px}
 .nav-vendre{background:#000;color:#fff;width:48px;height:48px;border-radius:50%;margin-top:-20px;border:3px solid #fff;font-size:20px;display:flex;align-items:center;justify-content:center}
-
-/* PROFIL */
-#pageProfil{display:none;padding:12px}
-.profil-box{background:#fff;border-radius:14px;padding:16px;margin-bottom:10px}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{flex:1;padding:10px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:13px}
-.tab.active{background:#000;color:#fff;border-color:#000}
-.input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;box-sizing:border-box}
-.btn{width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;margin-top:8px}
-.btn-black{background:#000;color:#fff}
-.btn-outline{background:#fff;border:1px solid #000}
-.btn-google{background:#fff;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;gap:8px}
-.code-box{display:none;background:#f9f9ff;padding:12px;border-radius:10px;margin-top:8px;border:1px dashed #6a5af9}
-.small{font-size:11px;color:#666}
 #form{display:none;background:#fff;margin:8px;padding:15px;border-radius:12px}
+#form input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px}
+.save{background:#000;color:#fff;width:100%;padding:14px;border:none;border-radius:10px;margin-top:10px;font-weight:700}
+/* AJOUT - DOCUMENTS INSCRIPTION SEPARES */
+.pageDoc{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#f5f5f7;z-index:200;overflow:auto;padding:15px}
+.pageDoc.active{display:block}
+.cardDoc{background:#fff;border-radius:18px;padding:20px;margin-top:10px}
+.inputDoc{width:100%;padding:14px;margin:6px 0;border:1.5px solid #ddd;border-radius:12px;box-sizing:border-box}
+.btnDoc{width:100%;padding:14px;border:none;border-radius:12px;font-weight:700;margin-top:10px}
+.btn-black{background:#0d172e;color:#fff}.btn-white{background:#fff;border:1px solid #ddd}
+.codeBox{background:#f6f5ff;border:1px dashed #7a6cff;padding:10px;border-radius:10px;margin-top:8px;text-align:center}
 </style>
 </head>
 <body>
 <header>
 <div class="top-row">
 <button class="search-btn" onclick="document.getElementById('searchInput').focus()">🔍</button>
-<div class="search-box"><input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="filtrer()"></div>
-<div style="font-weight:700">SEN</div>
+<div class="search-box"><input type="text" id="searchInput" placeholder="Rechercher produit, boutique..." onkeyup="filtrer()"></div>
+<div class="logo">SEN</div>
 </div>
 </header>
 
+<!-- TA FORM VENTE (on garde) -->
 <div id="form">
-<h3>Vendre</h3>
-<input type="file" id="f_photo" accept="image/*" class="input">
-<input type="text" id="f_nom" placeholder="Nom produit" class="input">
-<input type="number" id="f_prix" placeholder="Prix FCFA" class="input">
-<input type="text" id="f_vendeur" placeholder="Boutique" class="input">
-<input type="text" id="f_adresse" placeholder="Adresse" class="input">
-<input type="text" id="f_whatsapp" placeholder="WhatsApp 221..." class="input">
-<button class="btn btn-black" onclick="addProd()">Publier</button>
+<h3 style="margin:0 0 10px 0">Vendre</h3>
+<input type="file" id="f_photo" accept="image/*">
+<input type="text" id="f_nom" placeholder="Nom produit">
+<input type="number" id="f_prix" placeholder="Prix FCFA">
+<input type="text" id="f_vendeur" placeholder="Boutique">
+<input type="text" id="f_adresse" placeholder="Adresse">
+<input type="text" id="f_whatsapp" placeholder="WhatsApp 221...">
+<button class="save" onclick="addProd()">Publier</button>
 </div>
 
 <div id="liste"></div>
 
-<!-- PAGE PROFIL COMPLET -->
-<div id="pageProfil">
-<div class="profil-box" id="profilConnecte" style="display:none">
-<img id="avatar" src="https://i.pravatar.cc/100" style="width:60px;height:60px;border-radius:50%">
-<h3 id="nomProfil" style="margin:8px 0 2px 0"></h3>
-<p id="emailProfil" class="small"></p>
-<p id="phoneProfil" class="small"></p>
-<button class="btn btn-outline" onclick="deconnexion()">Déconnexion</button>
-</div>
-
-<div class="profil-box" id="profilAnonyme">
-<h3 style="margin-top:0">Mon Compte SENMARKET</h3>
-<div class="tabs">
-<button class="tab active" onclick="switchTab('email')">Email</button>
-<button class="tab" onclick="switchTab('phone')">Téléphone</button>
-<button class="tab" onclick="switchTab('google')">Google</button>
-</div>
-
-<!-- 1. COMPTE EMAIL + CODE GMAIL -->
-<div id="tab-email">
-<input type="email" id="e_email" placeholder="Adresse email (Gmail)" class="input">
-<input type="password" id="e_pass" placeholder="Mot de passe" class="input">
-<input type="password" id="e_pass2" placeholder="Confirmer mot de passe" class="input">
-<button class="btn btn-black" onclick="envoyerCodeEmail()">Recevoir code par Gmail</button>
-<div id="codeEmailBox" class="code-box">
-<p class="small">Code envoyé à <span id="emailDest"></span> (simulation APK : <b id="fakeEmailCode"></b>)</p>
-<input type="text" id="e_code" placeholder="Entre le code à 6 chiffres" class="input">
-<button class="btn btn-black" onclick="confirmerEmail()">Confirmer & Créer compte</button>
-</div>
-<p class="small" style="margin-top:10px">Déjà compte? <a href="#" onclick="connexionEmail()">Se connecter</a> | Mot de passe oublié? <a href="#" onclick="recupererCompte()">Récupérer</a></p>
-</div>
-
-<!-- 2. COMPTE TELEPHONE + SMS -->
-<div id="tab-phone" style="display:none">
-<input type="text" id="p_phone" placeholder="Numéro 77XXXXXXX" class="input">
-<button class="btn btn-black" onclick="envoyerCodeSMS()">Recevoir code par SMS</button>
-<div id="codePhoneBox" class="code-box">
-<p class="small">SMS envoyé au <span id="phoneDest"></span> (simulation : <b id="fakePhoneCode"></b>)</p>
-<input type="text" id="p_code" placeholder="Code SMS 6 chiffres" class="input">
-<input type="text" id="p_prenom" placeholder="Prénom" class="input">
-<input type="text" id="p_nom" placeholder="Nom" class="input">
-<button class="btn btn-black" onclick="confirmerPhone()">Confirmer & Créer compte</button>
-</div>
-</div>
-
-<!-- 3. COMPTE GOOGLE + INFOS -->
-<div id="tab-google" style="display:none">
-<button class="btn btn-google" onclick="googleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Continuer avec Google</button>
-<div id="googleForm" style="margin-top:12px">
-<input type="text" id="g_prenom" placeholder="Prénom" class="input">
-<input type="text" id="g_nom" placeholder="Nom" class="input">
-<input type="date" id="g_date" class="input">
-<select id="g_genre" class="input"><option value="">Sexe</option><option>Masculin</option><option>Féminin</option></select>
-<input type="email" id="g_email" placeholder="Email Google" class="input">
-<button class="btn btn-black" onclick="confirmerGoogle()">Créer compte Google</button>
-</div>
-</div>
-</div>
-</div>
-
+<!-- TON MENU BAS (on garde) -->
 <div class="bottom-nav">
-<button class="nav-item active" onclick="showHome()"><span class="nav-icon">🏠</span>Accueil</button>
+<button class="nav-item active" onclick="showAccueil()"><span class="nav-icon">🏠</span>Accueil</button>
 <button class="nav-item" onclick="document.getElementById('searchInput').focus()"><span class="nav-icon">🔍</span>Recherche</button>
 <button class="nav-item" onclick="toggleForm()"><span class="nav-vendre">+</span>Vendre</button>
 <button class="nav-item"><span class="nav-icon">🛒</span>Panier</button>
-<button class="nav-item" onclick="showProfil()"><span class="nav-icon">👤</span>Profil</button>
+<button class="nav-item" onclick="openDoc('profil')"><span class="nav-icon">👤</span>Profil</button>
+</div>
+
+<!-- DOCUMENT 1 : CHOIX INSCRIPTION -->
+<div id="doc-inscription" class="pageDoc">
+<a href="#" onclick="closeDoc()">← Fermer</a>
+<h2>ESPACE PERSONNEL</h2><h1 style="margin:0 0 15px 0;font-size:32px">Créer un compte</h1>
+<div class="cardDoc"><p style="font-size:12px;color:#666">Pour publier tu dois t'inscrire</p>
+<button class="btnDoc btn-black" onclick="openDoc('email')">📧 Email + code Gmail</button>
+<button class="btnDoc btn-white" onclick="openDoc('phone')">📱 Téléphone + code SMS</button>
+<button class="btnDoc btn-white" onclick="openDoc('google')">G Google + prénom nom date naissance</button>
+</div>
+</div>
+
+<!-- DOCUMENT 2 : EMAIL -->
+<div id="doc-email" class="pageDoc">
+<a href="#" onclick="openDoc('inscription')">← Retour</a><h1>Email</h1>
+<div class="cardDoc">
+<input id="e_nom" class="inputDoc" placeholder="Nom complet (comme ta photo)" style="border-color:#ffb100">
+<input id="e_tel" class="inputDoc" placeholder="Téléphone">
+<input id="e_email" class="inputDoc" placeholder="Adresse Gmail">
+<input id="e_pass" type="password" class="inputDoc" placeholder="Mot de passe">
+<input id="e_pass2" type="password" class="inputDoc" placeholder="Confirmer mot de passe">
+<button class="btnDoc btn-black" onclick="sendEmail()">Recevoir code par Gmail</button>
+</div>
+</div>
+
+<!-- DOCUMENT 3 : TELEPHONE -->
+<div id="doc-phone" class="pageDoc">
+<a href="#" onclick="openDoc('inscription')">← Retour</a><h1>Téléphone</h1>
+<div class="cardDoc">
+<input id="p_nom" class="inputDoc" placeholder="Nom complet" style="border-color:#ffb100">
+<input id="p_phone" class="inputDoc" placeholder="Numéro 77XXXXXXX">
+<button class="btnDoc btn-black" onclick="sendPhone()">Recevoir code par SMS</button>
+</div>
+</div>
+
+<!-- DOCUMENT 4 : GOOGLE -->
+<div id="doc-google" class="pageDoc">
+<a href="#" onclick="openDoc('inscription')">← Retour</a><h1>Google</h1>
+<div class="cardDoc">
+<input id="g_prenom" class="inputDoc" placeholder="Prénom">
+<input id="g_nom" class="inputDoc" placeholder="Nom">
+<input id="g_date" type="date" class="inputDoc">
+<select id="g_genre" class="inputDoc"><option>Masculin</option><option>Féminin</option></select>
+<input id="g_email" class="inputDoc" placeholder="Email Google">
+<button class="btnDoc btn-black" onclick="creerGoogle()">Créer compte Google</button>
+</div>
+</div>
+
+<!-- DOCUMENT 5 : VERIFICATION + RECUPERATION -->
+<div id="doc-verif" class="pageDoc">
+<a href="#" onclick="openDoc('inscription')">← Retour</a><h1>Vérification</h1>
+<div class="cardDoc">
+<p id="verifMsg" style="font-size:13px"></p>
+<div class="codeBox">Code (simulation APK): <b id="codeShow"></b></div>
+<input id="v_code" class="inputDoc" placeholder="Code 6 chiffres">
+<button class="btnDoc btn-black" onclick="verifCode()">Confirmer</button>
+<a href="#" style="font-size:12px;display:block;margin-top:10px" onclick="recuperer()">📧 Récupérer compte? Renvoyer code Gmail</a>
+</div>
+</div>
+
+<!-- DOCUMENT 6 : PROFIL (comme ta photo) -->
+<div id="doc-profil" class="pageDoc">
+<a href="#" onclick="closeDoc()">← Fermer</a>
+<h2>ESPACE PERSONNEL</h2><h1 style="margin:0 0 15px 0;font-size:32px">Mon compte</h1>
+<div class="cardDoc">
+<div style="font-weight:700">👤 Profil</div>
+<div id="profilAnonyme">
+<input id="nomComplet" class="inputDoc" placeholder="Nom complet" style="border-color:#ffb100">
+<input id="telephone" class="inputDoc" placeholder="Téléphone">
+<button class="btnDoc btn-black" onclick="enregistrerRapide()">Enregistrer</button>
+<hr>
+<button class="btnDoc btn-white" onclick="openDoc('inscription')">Créer compte sécurisé avec code</button>
+</div>
+<div id="profilConnecte" style="display:none">
+<p><b id="nomAffiche"></b><br><span id="emailAffiche" style="font-size:12px;color:#666"></span></p>
+<button class="btnDoc btn-white" onclick="deconnexion()">Déconnexion</button>
+</div>
+</div>
 </div>
 
 <script>
 let produits = JSON.parse(localStorage.getItem('sen_produits')||'[]');
-let user = JSON.parse(localStorage.getItem('sen_user')||'null');
-let codeEmailTemp="", codePhoneTemp="";
-
 if(produits.length==0){
  produits=[
   {nom:"Redmi A5 64Go",prix:"65 000",vendeur:"Moussa",adresse:"Keur Massar",whatsapp:"221771111111",photo:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400"},
-  {nom:"Sac Cuir",prix:"15 000",vendeur:"Awa",adresse:"Pikine",whatsapp:"221772222222",photo:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400"}
- ];
-}
-
-function show(liste=produits){
- let h=""; liste.slice().reverse().forEach(p=>{
-  h+=`<div class="card"><img src="${p.photo}"><div class="txt"><div class="nome">${p.nom}</div><div class="prix">${p.prix} FCFA</div><div style="font-size:10px;color:#777">${p.vendeur}</div><div class="bottom"><span class="loc">${p.adresse}</span><button class="phone" onclick="wa('${p.nom}','${p.prix}','${p.vendeur}','${p.adresse}','${p.whatsapp}')">📞</button></div></div></div>`;
- }); document.getElementById('liste').innerHTML=h;
-}
-function filtrer(){let q=searchInput.value.toLowerCase(); show(produits.filter(p=>p.nom.toLowerCase().includes(q)));}
-
-function showHome(){document.getElementById('liste').style.display='grid';document.getElementById('pageProfil').style.display='none';document.getElementById('form').style.display='none';}
-function showProfil(){document.getElementById('liste').style.display='none';document.getElementById('form').style.display='none';document.getElementById('pageProfil').style.display='block';refreshProfil();}
-function toggleForm(){showHome(); let f=document.getElementById('form'); f.style.display=f.style.display=='block'?'none':'block'; window.scrollTo(0,0);}
-
-function switchTab(t){
- document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
- document.getElementById('tab-email').style.display='none';
- document.getElementById('tab-phone').style.display='none';
- document.getElementById('tab-google').style.display='none';
- document.getElementById('tab-'+t).style.display='block';
- event.target.classList.add('active');
-}
-
-// EMAIL + CODE GMAIL
-function envoyerCodeEmail(){
- if(e_pass.value!=e_pass2.value) return alert("Mots de passe différents");
- codeEmailTemp = Math.floor(100000+Math.random()*900000).toString();
- document.getElementById('emailDest').innerText=e_email.value;
- document.getElementById('fakeEmailCode').innerText=codeEmailTemp;
- document.getElementById('codeEmailBox').style.display='block';
- alert("Code Gmail envoyé (simulation APK): "+codeEmailTemp);
-}
-function confirmerEmail(){
- if(e_code.value==codeEmailTemp){
-  user={type:"email",email:e_email.value,prenom:e_email.value.split('@')[0],nom:"",genre:"",phone:""};
-  localStorage.setItem('sen_user',JSON.stringify(user)); refreshProfil(); alert("Compte créé!");
- } else alert("Code faux");
-}
-function recupererCompte(){
- let email=prompt("Entre ton email Gmail pour récupérer:");
- if(email){ codeEmailTemp = Math.floor(100000+Math.random()*900000).toString(); alert("Code de récupération envoyé à "+email+" : "+codeEmailTemp+" (simulation)"); }
-}
-
-// TELEPHONE + SMS
-function envoyerCodeSMS(){
- codePhoneTemp = Math.floor(100000+Math.random()*900000).toString();
- document.getElementById('phoneDest').innerText=p_phone.value;
- document.getElementById('fakePhoneCode').innerText=codePhoneTemp;
- document.getElementById('codePhoneBox').style.display='block';
- alert("SMS envoyé (simulation): "+codePhoneTemp);
-}
-function confirmerPhone(){
- if(p_code.value==codePhoneTemp){
-  user={type:"phone",phone:p_phone.value,prenom:p_prenom.value,nom:p_nom.value,email:"",genre:""};
-  localStorage.setItem('sen_user',JSON.stringify(user)); refreshProfil(); alert("Compte téléphone créé!");
- } else alert("Code faux");
-}
-
-// GOOGLE
-function googleLogin(){ alert("Connexion Google simulée - remplis tes infos"); }
-function confirmerGoogle(){
- user={type:"google",email:g_email.value,prenom:g_prenom.value,nom:g_nom.value,date:g_date.value,genre:g_genre.value,phone:""};
- localStorage.setItem('sen_user',JSON.stringify(user)); refreshProfil(); alert("Compte Google créé!");
-}
-function refreshProfil(){
- if(user){
-  document.getElementById('profilConnecte').style.display='block';
-  document.getElementById('profilAnonyme').style.display='none';
-  document.getElementById('nomProfil').innerText=(user.prenom||"")+" "+(user.nom||"");
-  document.getElementById('emailProfil').innerText=user.email||"";
-  document.getElementById('phoneProfil').innerText=user.phone||""+ (user.genre?" - "+user.genre:"");
- } else {
-  document.getElementById('profilConnecte').style.display='none';
-  document.getElementById('profilAnonyme').style.display='block';
- }
-}
-function deconnexion(){ localStorage.removeItem('sen_user'); user=null; refreshProfil(); }
-function connexionEmail(){
- let e=prompt("Email:"); let p=prompt("Mot de passe:");
- let u=JSON.parse(localStorage.getItem('sen_user')||'null');
- if(u && u.email==e) { user=u; refreshProfil(); alert("Connecté"); } else alert("Pas trouvé - crée d'abord");
-}
-function addProd(){
- let file=f_photo.files[0]; let r=new FileReader();
- r.onload=e=>{
-  produits.push({photo:e.target.result,nom:f_nom.value,prix:f_prix.value,vendeur:f_vendeur.value,adresse:f_adresse.value,whatsapp:f_whatsapp.value});
-  localStorage.setItem('sen_produits',JSON.stringify(produits)); toggleForm(); show();
- }; if(file) r.readAsDataURL(file);
-}
-function wa(nom,prix,vendeur,adresse,whatsapp){ window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Bonjour ${vendeur} ${adresse}, je veux ${nom} ${prix}`)}`,'_blank');}
-show(); refreshProfil();
-</script>
-</body>
- </html>
-
-
+  {nom:"Sac Cuir",prix:"15 000",vendeur:"Awa",adresse:"Pikine",whatsapp:"221772222222",photo:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400"},
+  {nom:"Casque Bluetooth",prix:"18 000",vendeur:"Ibou",adresse:"Médina",whatsapp:"221773333333",photo:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"},
+  {nom:"Montre Connectée",prix:"25 000",vendeur:"
